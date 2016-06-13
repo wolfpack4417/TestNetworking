@@ -25,14 +25,16 @@ public class PlayerMove : NetworkBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Space)) 
 		{
-			Fire ();
+			CmdFire ();
 		}
 	}
 
-	void Fire () 
+	[Command]
+	void CmdFire () 
 	{
 		GameObject bullet = (GameObject)Instantiate (bulletPrefab, transform.position - transform.forward, Quaternion.identity);
 		bullet.GetComponent<Rigidbody> ().velocity = -transform.forward * 4;
+		NetworkServer.Spawn (bullet);
 		Destroy (bullet, 2.0f);
 	}
 }
