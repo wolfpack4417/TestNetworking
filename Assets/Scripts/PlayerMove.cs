@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 
 public class PlayerMove : NetworkBehaviour {
 
+	public GameObject bulletPrefab;
+
 	public override void OnStartLocalPlayer()
 	{
 		GetComponent<MeshRenderer>().material.color = Color.red;
@@ -20,5 +22,17 @@ public class PlayerMove : NetworkBehaviour {
 		var z = Input.GetAxis("Vertical")*0.1f;
 
 		transform.Translate(x, 0, z);
+
+		if (Input.GetKeyDown(KeyCode.Space)) 
+		{
+			Fire ();
+		}
+	}
+
+	void Fire () 
+	{
+		GameObject bullet = (GameObject)Instantiate (bulletPrefab, transform.position - transform.forward, Quaternion.identity);
+		bullet.GetComponent<Rigidbody> ().velocity = -transform.forward * 4;
+		Destroy (bullet, 2.0f);
 	}
 }
